@@ -1214,9 +1214,11 @@ def _fetch_app_from_git(app):
         Dict manifest
 
     """
-    app_tmp_archive = '{0}.zip'.format(app_tmp_folder)
-    if os.path.exists(app_tmp_folder):
-        shutil.rmtree(app_tmp_folder)
+    extracted_app_folder = app_tmp_folder
+
+    app_tmp_archive = '{0}.zip'.format(extracted_app_folder)
+    if os.path.exists(extracted_app_folder):
+        shutil.rmtree(extracted_app_folder)
     if os.path.exists(app_tmp_archive):
         os.remove(app_tmp_archive)
 
@@ -1312,7 +1314,7 @@ def _fetch_app_from_git(app):
                 subprocess.check_call([
                         'git', 'reset', '--hard',
                         str(app_info['git']['revision'])
-                    ], cwd=app_tmp_folder)
+                    ], cwd=extracted_app_folder)
                 with open(extracted_app_folder + '/manifest.json') as f:
                     manifest = json.loads(str(f.read()))
             except subprocess.CalledProcessError:
